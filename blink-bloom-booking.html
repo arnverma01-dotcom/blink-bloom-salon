@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book an Appointment – Blink & Bloom Salon</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blush: #f5d6d0;
+    --rose: #c97b6e;
+    --deep: #3a1f1a;
+    --cream: #fdf6f0;
+    --sage: #8a9e88;
+    --gold: #c9a96e;
+    --light-rose: #fbede9;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    color: var(--deep);
+    overflow-x: hidden;
+  }
+
+  /* ── Hero Header ── */
+  .hero {
+    position: relative;
+    background: var(--deep);
+    padding: 56px 24px 48px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 20% 50%, rgba(201,123,110,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 80% 30%, rgba(201,169,110,0.18) 0%, transparent 65%);
+  }
+  .hero-badge {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(201,169,110,0.4);
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 7vw, 64px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    position: relative;
+  }
+  .hero h1 em {
+    color: var(--blush);
+    font-style: italic;
+  }
+  .hero-sub {
+    margin-top: 12px;
+    font-size: 14px;
+    color: rgba(253,246,240,0.6);
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+  .petals {
+    position: absolute;
+    font-size: 22px;
+    opacity: 0.18;
+    animation: float 6s ease-in-out infinite;
+  }
+  .petals:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+  .petals:nth-child(2) { top: 60%; left: 92%; animation-delay: 2s; }
+  .petals:nth-child(3) { top: 30%; left: 88%; animation-delay: 4s; font-size: 14px; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(15deg); }
+  }
+
+  /* ── Main Layout ── */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+
+  /* ── Form Card ── */
+  .form-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 48px 40px;
+    box-shadow: 0 8px 48px rgba(58,31,26,0.08), 0 1px 0 rgba(201,123,110,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .form-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rose), var(--gold), var(--sage));
+  }
+
+  /* ── Section Label ── */
+  .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(201,123,110,0.3), transparent);
+  }
+
+  /* ── Grid ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .field-group { margin-bottom: 20px; }
+  .field-group.full { grid-column: 1 / -1; }
+
+  /* ── Labels & Inputs ── */
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--deep);
+    opacity: 0.7;
+    margin-bottom: 8px;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid rgba(58,31,26,0.12);
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--deep);
+    background: #fdfaf8;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--rose);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(201,123,110,0.1);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c97b6e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+  textarea { resize: vertical; min-height: 90px; }
+
+  /* ── Service Pills ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .service-pill input[type="checkbox"] { display: none; }
+  .service-pill label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    border: 1.5px solid rgba(58,31,26,0.12);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--deep);
+    opacity: 1;
+    background: #fdfaf8;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .service-pill label .icon { font-size: 16px; }
+  .service-pill input:checked + label {
+    border-color: var(--rose);
+    background: var(--light-rose);
+    color: var(--rose);
+    font-weight: 500;
+    box-shadow: 0 0 0 3px rgba(201,123,110,0.12);
+  }
+  .service-pill label:hover {
+    border-color: var(--rose);
+    background: var(--light-rose);
+  }
+
+  /* ── Divider ── */
+  .divider { height: 1px; background: rgba(58,31,26,0.07); margin: 32px 0; }
+
+  /* ── WhatsApp Button ── */
+  .btn-whatsapp {
+    width: 100%;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    letter-spacing: 0.02em;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+  }
+  .btn-whatsapp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(37,211,102,0.45);
+  }
+  .btn-whatsapp:active { transform: translateY(0); }
+  .wa-icon {
+    width: 24px; height: 24px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  /* ── Info Strip ── */
+  .info-strip {
+    margin-top: 24px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .info-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(58,31,26,0.5);
+  }
+  .info-chip span { font-size: 14px; }
+
+  /* ── Success State ── */
+  .success-overlay {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeUp 0.5s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .success-icon {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 24px rgba(37,211,102,0.3);
+  }
+  .success-overlay h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--deep);
+    margin-bottom: 8px;
+  }
+  .success-overlay p { font-size: 14px; color: rgba(58,31,26,0.6); }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: rgba(58,31,26,0.4);
+    letter-spacing: 0.05em;
+  }
+  .footer strong { color: var(--rose); font-weight: 500; }
+
+  @media (max-width: 560px) {
+    .form-card { padding: 32px 20px; }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Decorative Petals -->
+<div class="hero">
+  <div class="petals">🌸</div>
+  <div class="petals">✿</div>
+  <div class="petals">🌺</div>
+  <div class="hero-badge">Jaipur's Premier Salon</div>
+  <h1>Blink <em>&</em> Bloom<br>Salon</h1>
+  <p class="hero-sub">Book your appointment · Receive confirmation on WhatsApp</p>
+</div>
+
+<div class="container">
+  <div class="form-card">
+
+    <!-- Success State -->
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-icon">✓</div>
+      <h2>You're All Set!</h2>
+      <p>Your booking has been sent to WhatsApp.<br>Rinki will confirm your appointment shortly.</p>
+    </div>
+
+    <!-- Form -->
+    <form id="bookingForm" novalidate>
+
+      <!-- Personal Info -->
+      <div class="section-label">Your Details</div>
+      <div class="grid-2">
+        <div class="field-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" placeholder="e.g. Priya Sharma" required>
+        </div>
+        <div class="field-group">
+          <label for="phone">WhatsApp Number *</label>
+          <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Services -->
+      <div class="section-label">Choose Services</div>
+      <div class="services-grid">
+        <div class="service-pill">
+          <input type="checkbox" id="s1" name="service" value="Haircut & Styling">
+          <label for="s1"><span class="icon">✂️</span> Haircut & Styling</label>
+        </div>
+        <div class="service-pill">
+          <input type="checkbox" id="s2" name="service" value="Hair Colour">
+          <label for="s2"><span class="icon">🎨</span> Hair Colour</label>
+        </div>
+        <div class="service-pill">
+          <input type="checkbox" id="s3" name="service" value="Facial & Cleanup">
+          <label for="s3"><span class="icon">✨</span> Facial & Cleanup</label>
+        </div>
+        <div class="service-pill">
+          <input type="checkbox" id="s4" name="service" value="Makeup">
+          <label for="s4"><span class="icon">💄</span> Makeup</label>
+        </div>
+        <div class="service-pill">
+          <input type="checkbox" id="s5" name="service" value="Manicure & Pedicure">
+          <label for="s5"><span class="icon">💅</span> Manicure & Pedicure</label>
+        </div>
+        <div class="service-pill">
+          <input type="checkbox" id="s6" name="service" value="Waxing & Threading">
+          <label for="s6"><span class="icon">🌿</span> Waxing & Threading</label>
+        </div>
+        <div class="service-pill">
+          <input type="checkbox" id="s7" name="service" value="Hair Spa & Treatment">
+          <label for="s7"><span class="icon">🛁</span> Hair Spa & Treatment</label>
+        </div>
+        <div class="service-pill">
+          <input type="checkbox" id="s8" name="service" value="Mehendi">
+          <label for="s8"><span class="icon">🌸</span> Mehendi</label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Date & Time -->
+      <div class="section-label">Appointment Date & Time</div>
+      <div class="grid-2">
+        <div class="field-group">
+          <label for="date">Preferred Date *</label>
+          <input type="date" id="date" required>
+        </div>
+        <div class="field-group">
+          <label for="time">Preferred Time *</label>
+          <select id="time" required>
+            <option value="" disabled selected>Select a slot</option>
+            <option>10:00 AM</option>
+            <option>10:30 AM</option>
+            <option>11:00 AM</option>
+            <option>11:30 AM</option>
+            <option>12:00 PM</option>
+            <option>12:30 PM</option>
+            <option>1:00 PM</option>
+            <option>1:30 PM</option>
+            <option>2:00 PM</option>
+            <option>2:30 PM</option>
+            <option>3:00 PM</option>
+            <option>3:30 PM</option>
+            <option>4:00 PM</option>
+            <option>4:30 PM</option>
+            <option>5:00 PM</option>
+            <option>5:30 PM</option>
+            <option>6:00 PM</option>
+            <option>6:30 PM</option>
+            <option>7:00 PM</option>
+          </select>
+        </div>
+        <div class="field-group full">
+          <label for="notes">Special Requests / Notes</label>
+          <textarea id="notes" placeholder="Any special requests, skin concerns, or reference images you'd like to share…"></textarea>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-whatsapp">
+        <div class="wa-icon">💬</div>
+        Send Booking on WhatsApp
+      </button>
+
+      <div class="info-strip">
+        <div class="info-chip"><span>📍</span> Blink & Bloom Salon, Jaipur</div>
+        <div class="info-chip"><span>⏰</span> Open: 10 AM – 8 PM, All Days</div>
+        <div class="info-chip"><span>✅</span> Confirmation within 30 mins</div>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="footer">
+    Crafted with 🌸 for <strong>Blink & Bloom Salon</strong> · Jaipur
+  </div>
+</div>
+
+<script>
+  // ── CONFIGURATION ──────────────────────────────────────────────
+  // 🔧 REPLACE this with your actual WhatsApp number (with country code, no +, no spaces)
+  const WHATSAPP_NUMBER = "917849965275";
+  // ──────────────────────────────────────────────────────────────
+
+  // Set min date to today
+  const dateInput = document.getElementById('date');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.setAttribute('min', today);
+
+  document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name    = document.getElementById('name').value.trim();
+    const phone   = document.getElementById('phone').value.trim();
+    const date    = document.getElementById('date').value;
+    const time    = document.getElementById('time').value;
+    const notes   = document.getElementById('notes').value.trim();
+
+    // Validate required fields
+    if (!name || !phone || !date || !time) {
+      alert('Please fill in your name, WhatsApp number, date, and time.');
+      return;
+    }
+
+    // Collect selected services
+    const checked = [...document.querySelectorAll('input[name="service"]:checked')];
+    const services = checked.length > 0
+      ? checked.map(c => c.value).join(', ')
+      : 'Not specified';
+
+    // Format date nicely
+    const dateObj = new Date(date);
+    const formattedDate = dateObj.toLocaleDateString('en-IN', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    // Build WhatsApp message
+    const message = `🌸 *New Appointment Request*
+━━━━━━━━━━━━━━━━━━━
+*Blink & Bloom Salon, Jaipur*
+
+👤 *Name:* ${name}
+📱 *Contact:* ${phone}
+
+💇 *Services:*
+${services}
+
+📅 *Date:* ${formattedDate}
+🕐 *Time:* ${time}
+
+${notes ? `📝 *Notes:* ${notes}\n\n` : ''}Please confirm my appointment. Thank you! 🙏`;
+
+    const encoded = encodeURIComponent(message);
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+
+    // Show success state
+    document.getElementById('bookingForm').style.display = 'none';
+    document.getElementById('successOverlay').style.display = 'block';
+
+    // Open WhatsApp after brief delay
+    setTimeout(() => { window.open(url, '_blank'); }, 600);
+  });
+</script>
+</body>
+</html>
